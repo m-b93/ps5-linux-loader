@@ -180,14 +180,16 @@ Then, there are certain settings and commands we recommend doing:
 
 1. Disable screen saver, as it is currently buggy.
 
-2. Install Firefox:
+2. Possibly, you have to disable and reenable your Wired/WLAN connection to get internet connection.
+
+3. Install Firefox:
 
    ```bash
-   snap install firefox
+   sudo snap install firefox
    sudo snap refresh mesa-2404 --channel=latest/edge
    ```
 
-3. Clone our [ps5-linux-tools](https://github.com/ps5-linux/ps5-linux-tools):
+4. Clone our [ps5-linux-tools](https://github.com/ps5-linux/ps5-linux-tools):
 
    ```bash
    git clone https://github.com/ps5-linux/ps5-linux-tools
@@ -197,9 +199,8 @@ Then, there are certain settings and commands we recommend doing:
 
 You can use a M.2 SSD exclusively for Linux (which means you cannot use it for PS5 game storage).
 
-1. Attach the M.SSD and boot Linux on your PS5.
-
-2. Run these commands to initialize your M.2:
+1. Attach the M.SSD and format it on your PS5.
+2. Boot Linux on your PS5 and run these commands to initialize your M.2:
 
 ```bash
 sudo apt install zlib1g-dev
