@@ -74,3 +74,20 @@ __attribute__((noinline, optimize("O0"))) uint32_t putc_uart(uint64_t dmap,
   *uart_tx = (uint32_t)tx_byte & 0xFF;
   return 0;
 }
+
+__attribute__((noinline, optimize("O0"))) int puts_uart(uint64_t dmap, const uint8_t *msg) {
+  uint32_t max = 255;
+  int ret = 0;
+
+  for (int i = 0; i < 255; i++) {
+    if (msg[i] == '\0') {
+      break;
+    }
+    if (msg[i] == '\n') {
+      putc_uart(dmap, '\r');
+    }
+    ret = putc_uart(dmap, msg[i]);
+  }
+
+  return ret;
+}

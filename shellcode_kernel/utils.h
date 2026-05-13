@@ -39,5 +39,6 @@ uint64_t read_cr3(void);
 uint64_t va_to_pa_kernel(uint64_t va);
 uint64_t va_to_pa_custom(uint64_t va, uint64_t cr3_custom);
 uint32_t putc_uart(uint64_t dmap, uint8_t tx_byte);
+int puts_uart(uint64_t dmap, const uint8_t *msg);
 
 #endif

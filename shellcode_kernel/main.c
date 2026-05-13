@@ -50,17 +50,7 @@ __attribute__((section(".entry_point"))) uint32_t main(uint64_t add1,
       iommu_cb2_pa, iommu_cb3_pa, iommu_eb_pa, (uint64_t)&unk, &n_devices);
 
   if (ret != 0) {
-    putc_uart(args_ptr->dmap_base, 'I');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'U');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 's');
-    putc_uart(args_ptr->dmap_base, 'b');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'X');
-    putc_uart(args_ptr->dmap_base, '\n');
+    puts_uart(args_ptr->dmap_base, (char[]){"IOMMU sb X\n"});
     goto out;
   }
 
@@ -68,50 +58,20 @@ __attribute__((section(".entry_point"))) uint32_t main(uint64_t add1,
   ret = ((uint64_t(*)(void))args_ptr->fun_hv_iommu_wait_completion)();
 
   if (ret == 0) {
-    putc_uart(args_ptr->dmap_base, 'I');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'U');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 's');
-    putc_uart(args_ptr->dmap_base, 'b');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'K');
-    putc_uart(args_ptr->dmap_base, '\n');
+    puts_uart(args_ptr->dmap_base, (char[]){"IOMMU sb OK\n"});
 
     // Allow R/W on HV and Kernel area
     if (tmr_disable(args_ptr->dmap_base)) {
-      putc_uart(args_ptr->dmap_base, 'T');
-      putc_uart(args_ptr->dmap_base, 'M');
-      putc_uart(args_ptr->dmap_base, 'R');
-      putc_uart(args_ptr->dmap_base, ' ');
-      putc_uart(args_ptr->dmap_base, 'X');
-      putc_uart(args_ptr->dmap_base, '\n');
-
+      puts_uart(args_ptr->dmap_base, (char[]){"TMR X\n"});
       goto out;
     }
 
-    putc_uart(args_ptr->dmap_base, 'T');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'R');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'K');
-    putc_uart(args_ptr->dmap_base, '\n');
+    puts_uart(args_ptr->dmap_base, (char[]){"TMR OK\n"});
 
     // Patch HV
     patch_vmcb(args_ptr);
 
-    putc_uart(args_ptr->dmap_base, 'V');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'C');
-    putc_uart(args_ptr->dmap_base, 'B');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'K');
-    putc_uart(args_ptr->dmap_base, '\n');
+    puts_uart(args_ptr->dmap_base, (char[]){"VMCB OK\n"});
 
     // Re-do this to force a VMEXIT without HV injecting faults
     ((uint64_t(*)(uint64_t, uint64_t, uint64_t, uint64_t,
@@ -119,19 +79,7 @@ __attribute__((section(".entry_point"))) uint32_t main(uint64_t add1,
         iommu_cb2_pa, iommu_cb3_pa, iommu_eb_pa, (uint64_t)&unk, &n_devices);
     ((uint64_t(*)(void))args_ptr->fun_hv_iommu_wait_completion)();
 
-    putc_uart(args_ptr->dmap_base, 'B');
-    putc_uart(args_ptr->dmap_base, 'a');
-    putc_uart(args_ptr->dmap_base, 'c');
-    putc_uart(args_ptr->dmap_base, 'k');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'f');
-    putc_uart(args_ptr->dmap_base, 'r');
-    putc_uart(args_ptr->dmap_base, 'o');
-    putc_uart(args_ptr->dmap_base, 'm');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'H');
-    putc_uart(args_ptr->dmap_base, 'V');
-    putc_uart(args_ptr->dmap_base, '\n');
+    puts_uart(args_ptr->dmap_base, (char[]){"Back from HV\n"});
 
     // We can now initiate the global args variable and use it, as NPTs are
     // disabled
@@ -154,21 +102,7 @@ __attribute__((section(".entry_point"))) uint32_t main(uint64_t add1,
 
     printf("We shouldn't be here :(\n");
   } else {
-    putc_uart(args_ptr->dmap_base, 'I');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'M');
-    putc_uart(args_ptr->dmap_base, 'U');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 's');
-    putc_uart(args_ptr->dmap_base, 'b');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'N');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, ' ');
-    putc_uart(args_ptr->dmap_base, 'O');
-    putc_uart(args_ptr->dmap_base, 'K');
-    putc_uart(args_ptr->dmap_base, '\n');
+    puts_uart(args_ptr->dmap_base, (char[]){"IOMMU sb NO OK\n"});
   }
 
 out:
@@ -202,9 +136,8 @@ iommu_submit_cmd(volatile shellcode_kernel_args *args_ptr, uint64_t *cmd) {
   cmd_buffer[1] = cmd[1];
 
   __asm__ volatile("" : : : "memory"); // Prevent reordering
-  *((uint64_t *)args_ptr->iommu_mmio_va + IOMMU_MMIO_CB_TAIL / 8) =
-      next_tail; // Indicate the IOMMU that there is a CMD - Downscale the size
-                 // of the ptr
+  // Indicate the IOMMU that there is a CMD - Downscale the size of the ptr
+  *((uint64_t *)args_ptr->iommu_mmio_va + IOMMU_MMIO_CB_TAIL / 8) = next_tail;
 
   // Wait CMD processing completion - Head will be the Tail
   while (*((uint64_t *)args_ptr->iommu_mmio_va + IOMMU_MMIO_CB_HEAD / 8) !=
